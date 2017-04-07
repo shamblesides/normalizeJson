@@ -1,0 +1,14 @@
+{
+  "name": "normalize-json",
+  "version": "0.1.0",
+  "description": "Simple JSON validation/normalization using terse object literals",
+  "main": "normalize-json.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "json"
+  ],
+  "author": "Nigel Nelson",
+  "license": "MIT"
+}
