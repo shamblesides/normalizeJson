@@ -1,8 +1,10 @@
 module.exports = function nJFactory(requirements) {
-    return function nJ(obj) {
+    let nJ = function(obj) {
         obj = JSON.parse(JSON.stringify(obj));
         return validateObject(obj, requirements);
     };
+    nJ.requirements = requirements;
+    return nJ;
 };
 
 module.exports.jasmineMatchers = require('./jasmine-matchers.js');
@@ -92,15 +94,21 @@ function validateProperty(propName, value, obj, requirement) {
     // Array literal means that it's an array of some requirement.
     if (type === Array) {
         if (!Array.isArray(value)) throw new Error(`${propName} is not an array.`);
-        let problemIndex = value.findIndex((v,i)=>validateProperty(i, v, value, requirement.slice(1)) !== true);
-        if (problemIndex !== -1) throw new Error(`"${propName}" is invalid.`);
+        let element = null;
+        value.forEach((e,i) => {
+            element = e;
+            let result = validateProperty(i, element, value, requirement.slice(1));
+            if (result !== true) {
+                throw new Error(`"${propName}[${i}]" is invalid: ${result}`);
+            }
+        })
         return true;
     }
     
     // non-array objects are some kind of inner schema. resolve recursively.
     if ((typeof type) === 'object' && !Array.isArray(type)) {
-        let validation = validateObject(value, type)
-        return validation.valid || new Error(validation.error);
+        validateObject(value, type)
+        return true;
     }
     
     // if type is a string (not the literal String), it's an enum

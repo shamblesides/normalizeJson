@@ -386,4 +386,61 @@ describe("normalize-json", () => {
         expect(out).toEqual({ name:{first:'John',last:'Doe'} });
         expect(out.name.hasOwnProperty('extraField')).toBe(false);
     });
+
+    it('should expose the "requirements" field to access the original schema object', () => {
+        let nameSchema = nJ({
+            'first': [String, 30],
+            'last': [String, 30]
+        });
+        let personSchema = nJ({
+            'name': nameSchema.requirements,
+            'id': [String]
+        });
+
+        expect({name:{first:'John',last:'Doe'}, id:'123'}).toFitSchema(personSchema);
+    })
+
+    it('should validate functions within inner schemas', () => {
+        let numberSchema = nJ({
+            'type': ['positive', 'negative'],
+            'number': (num) => ((num.type === 'negative') ? [Number, -Infinity, 0] : [Number, 0, Infinity])
+        });
+        
+        expect({'type':'positive','number':5}).toFitSchema(numberSchema);
+        expect({'type':'positive','number':-5}).not.toFitSchema(numberSchema);
+        expect({'type':'negative','number':-5}).toFitSchema(numberSchema);
+        expect({'type':'negative','number':5}).not.toFitSchema(numberSchema);
+
+        let outerSchema = nJ({
+            'inner': numberSchema.requirements
+        });
+
+        expect({inner:{'type':'positive','number':5}}).toFitSchema(outerSchema);
+        expect({inner:{'type':'positive','number':-5}}).not.toFitSchema(outerSchema);
+        expect({inner:{'type':'negative','number':-5}}).toFitSchema(outerSchema);
+        expect({inner:{'type':'negative','number':5}}).not.toFitSchema(outerSchema);
+    });
+
+    it('should validate functions within objects of an array', () => {
+        let numberSchema = nJ({
+            'type': ['positive', 'negative'],
+            'number': (num) => ((num.type === 'negative') ? [Number, -Infinity, 0] : [Number, 0, Infinity])
+        });
+        
+        expect({'type':'positive','number':5}).toFitSchema(numberSchema);
+        expect({'type':'positive','number':-5}).not.toFitSchema(numberSchema);
+        expect({'type':'negative','number':-5}).toFitSchema(numberSchema);
+        expect({'type':'negative','number':5}).not.toFitSchema(numberSchema);
+
+        let numberArraySchema = nJ({
+            'list': [Array, numberSchema.requirements]
+        });
+
+        expect({list:[
+            {'type':'positive','number':5}, {'type':'negative', 'number':-5}
+        ]}).toFitSchema(numberArraySchema);
+        expect({list:[
+            {'type':'positive','number':5}, {'type':'positive', 'number':-5}
+        ]}).not.toFitSchema(numberArraySchema);
+    });
 });
