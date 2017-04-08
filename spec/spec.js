@@ -139,6 +139,29 @@ describe("normalize-json", () => {
         expect({'str': 'still too long'}).not.toFitSchema(schema)
     });
 
+    it('should automatically trim strings', () => {
+        let schema = nJ({ 'str': [ String ] });
+
+        expect(schema({str: 'hello '}).str).not.toBe('hello ');
+        expect(schema({str: 'hello '}).str).toBe('hello');
+
+        expect({str: '   '}).not.toFitSchema(schema);
+    });
+
+    it('should not modify the source objects', () => {
+        let schema = nJ({ 'str': [ String ] });
+
+        let obj = {str: ' hello ', extraField: undefined};
+        expect(obj.hasOwnProperty('extraField')).toBe(true);
+        expect(obj.str).toEqual(' hello ');
+        expect(obj.str).not.toEqual('hello');
+
+        schema(obj);
+        expect(obj.hasOwnProperty('extraField')).toBe(true);
+        expect(obj.str).toEqual(' hello ');
+        expect(obj.str).not.toEqual('hello');
+    });
+
     it('should validate numbers', () => {
         let schema = nJ({ 'num': [ Number ] });
 
