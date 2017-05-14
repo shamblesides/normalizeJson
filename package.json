@@ -25,5 +25,6 @@
   "bugs": {
     "url": "https://github.com/shamblesides/normalizeJson/issues"
   },
-  "homepage": "https://github.com/shamblesides/normalizeJson#readme"
+  "homepage": "https://github.com/shamblesides/normalizeJson#readme",
+  "runkitExampleFilename": "usage.js"
 }
