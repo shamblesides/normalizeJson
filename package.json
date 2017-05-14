@@ -1,6 +1,6 @@
 {
   "name": "normalize-json",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "Terse syntax for validating and normalizing JavaScript objects",
   "main": "normalize-json.js",
   "scripts": {
