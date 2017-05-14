@@ -1,17 +1,29 @@
 {
   "name": "normalize-json",
   "version": "0.1.3",
-  "description": "Simple JSON validation/normalization using terse object literals",
+  "description": "Terse syntax for validating and normalizing JavaScript objects",
   "main": "normalize-json.js",
   "scripts": {
     "test": "jasmine"
   },
   "keywords": [
-    "json"
+    "json",
+    "schema",
+    "validation",
+    "normalization"
   ],
   "author": "Nigel Nelson",
   "license": "MIT",
   "devDependencies": {
     "jasmine": "^2.5.3"
-  }
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shamblesides/normalizeJson.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shamblesides/normalizeJson/issues"
+  },
+  "homepage": "https://github.com/shamblesides/normalizeJson#readme"
 }
