@@ -1,20 +1,24 @@
-const nJ = require('normalizeJson');
+const nJ = require('normalize-json');
 
+// a schema looks like this!
 let validator = nJ({
-    name: [String, 30],
-    age: [Number, 0, 100],
-    color: ['red', 'yellow', 'blue']
+    name: [String, 30], // a string with <= 30 characters
+    age: [Number, 0, 100], // a number between 0 and 100, inclusive
+    color: ['red', 'yellow', 'blue'] // must be one of these three values
 });
 
+// here's how we might validate/normalize an object
 let obj = {
-    name: 'Nigel',
+    name: ' Nigel   ', // this string will be trimmed!
     age: 23,
-    color: ' blue  '
+    color: 'blue',
+    someUndefinedField: undefined // undefined fields will be stripped out
 };
 
-let result = validator(obj);
+let result = validator(obj); // 'result' is a new object; 'obj' has not been changed
 console.log(result); // { name: 'Nigel', age: 23, color: 'blue' }
 
+// here's a bad object; this will fail validation
 let badObj = {
     name: 'Somebody',
     age: 'not a number',
@@ -26,5 +30,5 @@ try {
     let result = validator(badObj);
 }
 catch (err) {
-    console.log(err); // string containing information about failure
+    console.log(err.message); // will give the first found error: "age is not a number"
 }

@@ -261,6 +261,7 @@ describe("normalize-json", () => {
 
         expect({'someEnum': 'stringgg'}).not.toFitSchema(schema)
         expect({'someEnum': 'String'}).not.toFitSchema(schema)
+        expect({'someEnum': '  string  '}).not.toFitSchema(schema)
         expect({'someEnum': 0}).not.toFitSchema(schema)
         expect({'someEnum': false}).not.toFitSchema(schema)
         expect({'someEnum': null}).not.toFitSchema(schema)
@@ -301,6 +302,7 @@ describe("normalize-json", () => {
 
         expect({'someEnum': [7] }).not.toFitSchema(schema)
         expect({'someEnum': [7,'9',true,'false',undefined] }).not.toFitSchema(schema)
+        expect({'someEnum': '  7  '}).not.toFitSchema(schema)
         expect({'someEnum': '7'}).not.toFitSchema(schema)
         expect({'someEnum': 9}).not.toFitSchema(schema)
         expect({'someEnum': 'true'}).not.toFitSchema(schema)
