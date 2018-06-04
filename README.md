@@ -1,4 +1,4 @@
-[![NPM](https://nodei.co/npm/coolstory.js.png?compact=true)](https://nodei.co/npm/coolstory.js/)
+[![NPM](https://nodei.co/npm/normalize-json.png?compact=true)](https://nodei.co/npm/normalize-json/)
 
 [![Try normalize-json on RunKit](https://badge.runkitcdn.com/normalize-json.svg)](https://npm.runkit.com/normalize-json)
 
